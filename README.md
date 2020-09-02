@@ -13,3 +13,6 @@ Legajo: 69912
 
 Leonardo Arevalo
 Legajo: 68098
+
+Ernesto Leo
+Legajo: 81186
