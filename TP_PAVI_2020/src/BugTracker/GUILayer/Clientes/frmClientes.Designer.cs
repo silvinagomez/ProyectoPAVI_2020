@@ -69,6 +69,7 @@
             this.btnQuitar.Size = new System.Drawing.Size(40, 40);
             this.btnQuitar.TabIndex = 15;
             this.btnQuitar.UseVisualStyleBackColor = true;
+            this.btnQuitar.Click += new System.EventHandler(this.btnQuitar_Click);
             // 
             // btnSalir
             // 
@@ -108,6 +109,7 @@
             this.dgvClientes.Name = "dgvClientes";
             this.dgvClientes.Size = new System.Drawing.Size(413, 180);
             this.dgvClientes.TabIndex = 7;
+            this.dgvClientes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvClientes_CellClick);
             // 
             // btnConsultar
             // 

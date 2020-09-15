@@ -88,7 +88,7 @@ namespace BugTracker.DataAccessLayer
                             "    fecha_alta = @FechaAlta, " +
                             "    calle = @Calle, " +
                             "    numero = @NumeroCalle, " +
-                            "    id_barrio = @IDbarrio, " +
+                            "    id_barrio = @IDbarrio " +
                             "WHERE id_cliente = @id_cliente";
             var parametros = new Dictionary<string, object>();
             parametros.Add("RazonSocial", oCliente.RazonSocial);
@@ -104,7 +104,7 @@ namespace BugTracker.DataAccessLayer
 
         internal bool Delete(Clientes oCliente)
         {
-            string strSql = "UPDATE Cientes " +
+            string strSql = "UPDATE Clientes " +
                             "SET borrado = 1 " +
                             "WHERE id_cliente = @id_cliente";
             var parametros = new Dictionary<string, object>();

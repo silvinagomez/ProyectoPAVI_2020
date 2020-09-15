@@ -113,5 +113,20 @@ namespace BugTracker.GUILayer.Clientes
             formulario.ShowDialog();
             btnConsultar_Click(sender, e);
         }
+
+        private void dgvClientes_CellClick(object sender, System.Windows.Forms.DataGridViewCellEventArgs e)
+        {
+            btnEditar.Enabled = true;
+            btnQuitar.Enabled = true;
+        }
+
+        private void btnQuitar_Click(object sender, EventArgs e)
+        {
+            frmABMCliente formulario = new frmABMCliente();
+            var cliente = (BugTracker.Entities.Clientes)dgvClientes.CurrentRow.DataBoundItem;
+            formulario.InicializarFormulario(frmABMCliente.FormMode.delete, cliente);
+            formulario.ShowDialog();
+            btnConsultar_Click(sender, e);
+        }
     }
 }
