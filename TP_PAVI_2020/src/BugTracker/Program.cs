@@ -1,10 +1,11 @@
-﻿using System;
+﻿using BugTracker.GUILayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TPS_InicioSesion
+namespace BugTracker
 {
     static class Program
     {
@@ -16,6 +17,8 @@ namespace TPS_InicioSesion
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            // Configuramos el frmPrincipal para que inicie con la aplicacion.
             Application.Run(new frmPrincipal());
         }
     }
