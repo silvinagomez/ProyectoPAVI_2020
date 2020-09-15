@@ -12,7 +12,7 @@ public class DataManager : IDisposable
     public DataManager()
     {
         dbConnection = new SqlConnection();
-        var string_conexion = "Data Source=192.168.1.19;Initial Catalog=BugTracker81186_EXT;Persist Security Info=True;User ID=sa;Password=0Buds0331/k";
+        var string_conexion = "Data Source=.\\SQLEXPRESS;Initial Catalog=BugTracker;Integrated Security=true;";
         dbConnection.ConnectionString = string_conexion;
     }
 
