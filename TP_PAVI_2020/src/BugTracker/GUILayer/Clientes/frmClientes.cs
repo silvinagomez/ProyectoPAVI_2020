@@ -128,5 +128,20 @@ namespace BugTracker.GUILayer.Clientes
             formulario.ShowDialog();
             btnConsultar_Click(sender, e);
         }
+
+        private void btnEditContact_Click(object sender, EventArgs e)
+        {
+            SeleccionFormModeContacto formSeleccion = new SeleccionFormModeContacto();
+            if (dgvClientes.CurrentRow == null)
+            {
+                MessageBox.Show("Debe seleccionar un cliente para consultar un contacto!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                var cliente = (BugTracker.Entities.Clientes)dgvClientes.CurrentRow.DataBoundItem;
+                formSeleccion.InicializarFormulario(cliente);
+                formSeleccion.ShowDialog();
+            }
+        }
     }
 }

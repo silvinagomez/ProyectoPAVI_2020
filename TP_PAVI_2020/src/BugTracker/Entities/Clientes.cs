@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,6 +17,8 @@ namespace BugTracker.Entities
         public int NumeroCalle { get; set; }
         public DateTime FechaAlta { get; set; }
         public Barrio Barrio { get; set; }
+        public Contacto Contacto { get; set; }
+
 
 
 

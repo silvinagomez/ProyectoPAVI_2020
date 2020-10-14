@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.pnlFiltros = new System.Windows.Forms.Panel();
+            this.btnEditContact = new System.Windows.Forms.Button();
             this.btnQuitar = new System.Windows.Forms.Button();
             this.btnSalir = new System.Windows.Forms.Button();
             this.btnEditar = new System.Windows.Forms.Button();
@@ -45,6 +46,7 @@
             // 
             // pnlFiltros
             // 
+            this.pnlFiltros.Controls.Add(this.btnEditContact);
             this.pnlFiltros.Controls.Add(this.btnQuitar);
             this.pnlFiltros.Controls.Add(this.btnSalir);
             this.pnlFiltros.Controls.Add(this.btnEditar);
@@ -59,6 +61,16 @@
             this.pnlFiltros.Name = "pnlFiltros";
             this.pnlFiltros.Size = new System.Drawing.Size(437, 325);
             this.pnlFiltros.TabIndex = 0;
+            // 
+            // btnEditContact
+            // 
+            this.btnEditContact.Image = global::BugTracker.Properties.Resources.Webp_net_resizeimage__1_;
+            this.btnEditContact.Location = new System.Drawing.Point(330, 278);
+            this.btnEditContact.Name = "btnEditContact";
+            this.btnEditContact.Size = new System.Drawing.Size(40, 40);
+            this.btnEditContact.TabIndex = 17;
+            this.btnEditContact.UseVisualStyleBackColor = true;
+            this.btnEditContact.Click += new System.EventHandler(this.btnEditContact_Click);
             // 
             // btnQuitar
             // 
@@ -181,5 +193,6 @@
         internal System.Windows.Forms.Button btnSalir;
         internal System.Windows.Forms.Button btnEditar;
         internal System.Windows.Forms.Button btnNuevo;
+        internal System.Windows.Forms.Button btnEditContact;
     }
 }

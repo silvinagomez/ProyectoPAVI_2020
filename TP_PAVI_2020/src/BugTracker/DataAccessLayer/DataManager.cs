@@ -7,12 +7,14 @@ public class DataManager : IDisposable
 {
     private SqlConnection dbConnection;
 
+    private SqlTransaction dbTransaction;
+
 
     private static DataManager instance;
     public DataManager()
     {
         dbConnection = new SqlConnection();
-        var string_conexion = "Data Source=.\\SQLEXPRESS;Initial Catalog=BugTracker;Integrated Security=true;";
+        var string_conexion = "Data Source=192.168.1.19;Initial Catalog=BugTracker81186_EXT;Persist Security Info=True;User ID=sa;Password=0Buds0331/k";
         dbConnection.ConnectionString = string_conexion;
     }
 
@@ -154,5 +156,22 @@ public class DataManager : IDisposable
     public void Dispose()
     {
         this.Close();
+    }
+
+    public void BeginTransaction()
+    {
+        if (dbConnection.State == ConnectionState.Open)
+            dbTransaction = dbConnection.BeginTransaction();
+    }
+    public void Commit()
+    {
+        if (dbTransaction != null)
+            dbTransaction.Commit();
+    }
+
+    public void Rollback()
+    {
+        if (dbTransaction != null)
+            dbTransaction.Rollback();
     }
 }
