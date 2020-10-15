@@ -133,42 +133,58 @@ namespace BugTracker.GUILayer.Clientes
                 
                 case FormMode.delete:
                     {
-                        if(MessageBox.Show("¿Seguro que desea eliminar el contacto seleccionado?", "Aviso", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                        if (ExisteContacto() == true)
                         {
-                            if (oClienteService.EliminarContacto(oClienteSelected))
+                            if (MessageBox.Show("¿Seguro que desea eliminar el contacto seleccionado?", "Aviso", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                             {
-                                MessageBox.Show("Contacto Eliminado", "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                this.Close();
-                            }
-                            else
-                                MessageBox.Show("Error al eliminar el contacto seleccionado!", "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                if (oClienteService.EliminarContacto(oClienteSelected))
+                                {
+                                    MessageBox.Show("Contacto Eliminado", "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    this.Close();
+                                }
+                                else
+                                    MessageBox.Show("Error al eliminar el contacto seleccionado!", "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                            }
+                            break;
                         }
-                        break;
+                        else
+                        {
+                            MessageBox.Show("El cliente seleccionado no tiene un contacto asignado!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            break;
+                        }
                     }
                 
                 case FormMode.update:
                     {
-                        if(ValidarCampos())
+                        if (ExisteContacto() == true)
                         {
-                            oClienteSelected.Contacto.Nombre = txtNombre.Text;
-                            oClienteSelected.Contacto.Apellido = txtApellido.Text;
-                            oClienteSelected.Contacto.Email = txtEmail.Text;
-                            oClienteSelected.Contacto.Telefono = txtTelefono.Text;
-
-                            if (MessageBox.Show("¿Seguro que desea actualizar el contacto seleccionado?", "Aviso", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                            if (ValidarCampos())
                             {
+                                oClienteSelected.Contacto.Nombre = txtNombre.Text;
+                                oClienteSelected.Contacto.Apellido = txtApellido.Text;
+                                oClienteSelected.Contacto.Email = txtEmail.Text;
+                                oClienteSelected.Contacto.Telefono = txtTelefono.Text;
 
-                                if (oClienteService.ActualizarContacto(oClienteSelected))
+                                if (MessageBox.Show("¿Seguro que desea actualizar el contacto seleccionado?", "Aviso", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                                 {
-                                    MessageBox.Show("Contacto actualizado!", "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                    this.Dispose();
+
+                                    if (oClienteService.ActualizarContacto(oClienteSelected))
+                                    {
+                                        MessageBox.Show("Contacto actualizado!", "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        this.Dispose();
+                                    }
+                                    else
+                                        MessageBox.Show("Error al actualizar el contacto!", "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
-                                else
-                                    MessageBox.Show("Error al actualizar el contacto!", "Informacion", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             }
+                            break;
                         }
-                        break;
+                        else
+                        {
+                            MessageBox.Show("El cliente seleccionado no tiene un contacto asignado!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            break;
+                        }
                     }
             }
 
