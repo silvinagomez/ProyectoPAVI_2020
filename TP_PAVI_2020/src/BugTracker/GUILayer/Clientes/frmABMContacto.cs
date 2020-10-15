@@ -109,14 +109,15 @@ namespace BugTracker.GUILayer.Clientes
                     {
                         if (ValidarCampos())
                         {
-                            var oContacto = new Contacto();
-                            oClienteSelected.Contacto = oContacto;
+                            Contacto oContacto = new Contacto();
 
-                            oClienteSelected.Contacto.Nombre = txtNombre.Text;
-                            oClienteSelected.Contacto.Apellido = txtApellido.Text;
-                            oClienteSelected.Contacto.Email = txtEmail.Text;
-                            oClienteSelected.Contacto.Telefono = txtTelefono.Text;
-                            oClienteSelected.Contacto.Borrado = 0;
+                            oContacto.Nombre = txtNombre.Text;
+                            oContacto.Apellido = txtApellido.Text;
+                            oContacto.Email = txtEmail.Text;
+                            oContacto.Telefono = txtTelefono.Text;
+                            oContacto.Borrado = 0;
+
+                            oClienteSelected.Contacto = oContacto;
 
                             if (oClienteService.CrearContacto(oClienteSelected))
                             {

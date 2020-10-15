@@ -124,7 +124,7 @@ namespace BugTracker.GUILayer.Clientes
                             {
                                 var oClientes = new BugTracker.Entities.Clientes();
                                 oClientes.RazonSocial = txtRazonSocial.Text;
-                                oClientes.Cuit = (int)Convert.ToUInt32(txtCuit.Text);
+                                oClientes.Cuit = (int)Convert.ToInt64(txtCuit.Text);
                                 oClientes.Calle = txtCalle.Text;
                                 oClientes.Barrio = new Barrio();
                                 oClientes.Barrio.IDBarrio = (int)cboBarrio.SelectedValue;

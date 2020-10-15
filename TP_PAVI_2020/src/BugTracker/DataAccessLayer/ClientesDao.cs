@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using BugTracker.Entities;
 using BugTracker.DataAccessLayer;
 using System.Data;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace BugTracker.DataAccessLayer
 {
@@ -15,7 +16,7 @@ namespace BugTracker.DataAccessLayer
         {
             List<Clientes> listadoClientes = new List<Clientes>();
 
-            var strSql = "SELECT razon_social, cuit, calle, numero, b.id_barrio, b.nombre, fecha_alta  " +
+            var strSql = "SELECT id_cliente, razon_social, cuit, calle, numero, b.id_barrio, b.nombre, fecha_alta, id_contacto " +
                          "FROM Clientes c " +
                          "INNER JOIN Barrios b ON c.id_barrio = b.id_barrio " +
                          "WHERE c.borrado = 0";
@@ -109,12 +110,15 @@ namespace BugTracker.DataAccessLayer
                 var nuevoId = dm.ConsultaSQLScalar(" SELECT @@IDENTITY ");
                 oCliente.Contacto.IdContacto = Convert.ToInt32(nuevoId);
 
-                string strSqlC = "UPDATE CLientes (id_contacto) " +
-                                 "VALUES          (@id_contacto) ";
+                string strSqlC = "UPDATE Clientes " +
+                                 "SET id_contacto = @id_contacto " +
+                                 "WHERE id_cliente = @id_cliente ";
 
-                var parametrosC = new Dictionary<string, Object>();
-                parametrosC.Add("id_contacto", oCliente.Contacto.IdContacto);
+                var parametrosC = new Dictionary<string, object>();
+                parametrosC.Add("id_contacto", nuevoId);
+                parametrosC.Add("id_cliente", oCliente.IDCLiente);
 
+               
                 resultado = (dm.EjecutarSQL(strSqlC, parametrosC) == 1);
 
                 dm.Commit();
@@ -138,8 +142,8 @@ namespace BugTracker.DataAccessLayer
 
         internal bool Create(Clientes oClientes)
         {
-            var strSql = "INSERT INTO Clientes (cuit, razon_social, borrado, calle, numero, fecha_alta, id_barrio)" +
-                         "VALUES               (@Cuit, @RazonSocial, 0, @Calle, @NumeroCalle, @FechaAlta, @Idbarrio)";
+            var strSql = "INSERT INTO Clientes (cuit, razon_social, borrado, calle, numero, fecha_alta, id_barrio, id_contacto)" +
+                         "VALUES               (@Cuit, @RazonSocial, 0, @Calle, @NumeroCalle, @FechaAlta, @Idbarrio, NULL)";
 
             var parametros = new Dictionary<string, object>();
             parametros.Add("Cuit", oClientes.Cuit);
@@ -162,13 +166,15 @@ namespace BugTracker.DataAccessLayer
                             "    apellido = @Apellido, " +
                             "    email = @Email, " +
                             "    telefono = @Telefono " +
-                            "WHERE id_contacto=@IDContacto";
+                            "WHERE id_contacto = (SELECT id_contacto " +
+                            "                     FROM Clientes " +
+                            "                     WHERE id_cliente = @id_cliente) ";
             var parametros = new Dictionary<string, object>();
             parametros.Add("Nombre", oCliente.Contacto.Nombre);
             parametros.Add("Apellido", oCliente.Contacto.Apellido);
             parametros.Add("Email", oCliente.Contacto.Email);
             parametros.Add("Telefono", oCliente.Contacto.Telefono);
-            parametros.Add("IDContacto", oCliente.Contacto.IdContacto);
+            parametros.Add("id_cliente", oCliente.IDCLiente);
 
             return (DataManager.GetInstance().EjecutarSQL(strSql, parametros) == 1);
         }
@@ -212,18 +218,18 @@ namespace BugTracker.DataAccessLayer
                                 "SET borrado = 1 " +
                                 "WHERE id_contacto = (SELECT id_contacto " +
                                 "                     FROM Clientes " +
-                                "                     WHERE id_cliente=@id_cliente";
+                                "                     WHERE id_cliente = @id_cliente)";
                 var parametros = new Dictionary<string, object>();
                 parametros.Add("id_cliente", oCliente.IDCLiente);
                 dm.EjecutarSQL(strSql, parametros);
 
                 string strSqlC = "UPDATE Clientes " +
-                                 "SET id_contacto = NULL" +
+                                 "SET id_contacto = NULL " +
                                  "WHERE id_cliente = @id_cliente ";
                 var parametrosC = new Dictionary<string, object>();
                 parametrosC.Add("id_cliente", oCliente.IDCLiente);
                 
-                resultado = (dm.EjecutarSQL(strSqlC, parametrosC) == 1);
+                dm.EjecutarSQL(strSqlC, parametrosC);
 
                 dm.Commit();
 
@@ -237,6 +243,7 @@ namespace BugTracker.DataAccessLayer
 
             finally
             {
+                resultado = true;
                 dm.Close();
             }
 
@@ -257,17 +264,30 @@ namespace BugTracker.DataAccessLayer
         private Clientes ObjectMapping(DataRow row)
         {
             Clientes oClientes = new Clientes();
+            oClientes.IDCLiente = Convert.ToInt32(row["id_cliente"].ToString());
             oClientes.RazonSocial = row["razon_social"].ToString();
             oClientes.Cuit = Convert.ToInt32(row["cuit"].ToString());
             oClientes.Calle = row["calle"].ToString();
             oClientes.NumeroCalle = Convert.ToInt32(row["numero"].ToString());
+
             oClientes.Barrio = new Barrio();
+
             oClientes.Barrio.IDBarrio = Convert.ToInt32(row["id_barrio"].ToString());
             oClientes.Barrio.Nombre = row["nombre"].ToString();
             oClientes.FechaAlta = Convert.ToDateTime(row["fecha_alta"].ToString());
-            
-            
 
+            oClientes.Contacto = new Contacto();
+
+            var id = row["id_contacto"];
+            if (id.GetType() == typeof(DBNull))
+            {
+                oClientes.Contacto = null;
+            }
+            else
+            {
+                oClientes.Contacto.IdContacto = Convert.ToInt32(row["id_contacto"].ToString());
+            }
+                        
             return oClientes;
         }
 

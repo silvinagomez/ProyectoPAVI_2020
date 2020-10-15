@@ -60,6 +60,7 @@ public class DataManager : IDisposable
             cmd.Connection = dbConnection;
             cmd.CommandType = CommandType.Text;
             cmd.CommandText = strSql;
+            cmd.Transaction = GetTransacction();
 
             //Agregamos a la colección de parámetros del comando los filtros recibidos
             if (prs != null)
@@ -93,7 +94,7 @@ public class DataManager : IDisposable
         // Se utiliza para sentencias SQL del tipo “Insert/Update/Delete”
 
         SqlCommand cmd = new SqlCommand();
-
+        cmd.Transaction = GetTransacction();
         int rtdo = 0;
 
         // Try Catch Finally
@@ -139,12 +140,16 @@ public class DataManager : IDisposable
     public object ConsultaSQLScalar(string strSql)
     {
         SqlCommand cmd = new SqlCommand();
+        cmd.Transaction = GetTransacction();
+
         try
         {
+
             cmd.Connection = dbConnection;
             cmd.CommandType = CommandType.Text;
             // Establece la instrucción a ejecutar
             cmd.CommandText = strSql;
+
             return cmd.ExecuteScalar();
         }
         catch (SqlException ex)
@@ -173,5 +178,10 @@ public class DataManager : IDisposable
     {
         if (dbTransaction != null)
             dbTransaction.Rollback();
+    }
+
+    public SqlTransaction GetTransacction()
+    {
+        return dbTransaction;
     }
 }
